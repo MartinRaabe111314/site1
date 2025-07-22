@@ -114,6 +114,48 @@
         z-index: 2;
       }
     }
+    .ticket-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 540px; /* 1.5x the previous 360px (approximate) */
+      height: 540px;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .ticket-placeholder-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+    }
+    .ticket-rect {
+      height: 90%;
+      aspect-ratio: 3 / 5;
+      width: auto;
+      background: #111;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
+    }
+    .countdown-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .countdown-timer {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #222;
+      letter-spacing: 0.05em;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -180,6 +222,16 @@
       <p>I love you, Abbey</p>
       <div class="author">- Mr. Boy</div>
     </div>
+    <div class="poem-box countdown-box">
+      <h3>Countdown to September 14</h3>
+      <div id="countdown-timer" class="countdown-timer">Loading...</div>
+    </div>
+    <div class="poem-box ticket-box">
+      <div class="ticket-placeholder-container">
+        <div class="ticket-rect"></div>
+        <div class="ticket-rect"></div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -218,6 +270,28 @@
         poemsVisible = true;
       }
     });
+
+    // Countdown Timer Script
+    function updateCountdown() {
+      // Target: September 14, 2024, 12:00am PST (UTC-7)
+      const target = new Date('2024-09-14T07:00:00Z');
+      const now = new Date();
+      const diff = target - now;
+      if (diff <= 0) {
+        document.getElementById('countdown-timer').textContent = 'The day has arrived!';
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      document.getElementById('countdown-timer').textContent =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    if (document.getElementById('countdown-timer')) {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
   </script>
 </body>
 </html> 
