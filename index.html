@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pin Protected Site</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      transition: background 0.3s ease;
+    }
+    body.welcome-mode {
+      background: #e6f3ff;
+    }
+    .center-box {
+      background: #e0e0e0;
+      padding: 2.5rem 2rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 320px;
+      min-height: 220px;
+      justify-content: center;
+      transition: box-shadow 0.2s, background 0.3s ease;
+    }
+    .center-box.welcome-mode {
+      background: #ffe6f0;
+    }
+    .center-box h2 {
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+    }
+    .input-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input[type="password"] {
+      padding: 0.7rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 0.5rem;
+      font-size: 1.1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 200px;
+      margin-bottom: 0.7rem;
+      background: #fafaff;
+    }
+    input[type="password"].error {
+      border-color: #e74c3c;
+      background: #fff0f0;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      height: 1.2em;
+      text-align: center;
+    }
+    .error-message.visible {
+      opacity: 1;
+    }
+    .welcome-message {
+      color: #333;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 0.7rem;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      height: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .welcome-message.visible {
+      opacity: 1;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: block;
+      margin: 0 auto;
+    }
+    button:hover {
+      background: #111;
+    }
+  </style>
+</head>
+<body>
+  <div id="main-box" class="center-box">
+    <h2>Enter Pin to Continue</h2>
+    <form id="pin-form" autocomplete="off">
+      <div class="input-group">
+        <input type="password" id="pin-input" placeholder="Enter pin here" maxlength="12" />
+        <div id="error-message" class="error-message">Not quite</div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="welcome-message" class="welcome-message">Welcome, Abbey</div>
+  </div>
+
+  <!-- Preload the collage image -->
+  <img src="Collage.jpg" style="display: none;" alt="">
+
+  <script>
+    const pinForm = document.getElementById('pin-form');
+    const pinInput = document.getElementById('pin-input');
+    const errorMessage = document.getElementById('error-message');
+    const welcomeMessage = document.getElementById('welcome-message');
+    const CORRECT_PIN = '1';
+    let errorTimeout = null;
+    let welcomeTimeout = null;
+
+    pinForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (pinInput.value === CORRECT_PIN) {
+        pinForm.style.display = 'none';
+        document.querySelector('#main-box h2').style.display = 'none';
+        document.body.classList.add('welcome-mode');
+        document.getElementById('main-box').classList.add('welcome-mode');
+        welcomeMessage.classList.add('visible');
+        welcomeTimeout = setTimeout(() => {
+          window.location.href = 'protected.html';
+        }, 1500);
+      } else {
+        pinInput.classList.add('error');
+        errorMessage.classList.add('visible');
+        if (errorTimeout) clearTimeout(errorTimeout);
+        errorTimeout = setTimeout(() => {
+          pinInput.classList.remove('error');
+          errorMessage.classList.remove('visible');
+        }, 3000);
+      }
+    });
+
+    pinInput.addEventListener('input', function() {
+      if (pinInput.classList.contains('error')) {
+        pinInput.classList.remove('error');
+        errorMessage.classList.remove('visible');
+        if (errorTimeout) clearTimeout(errorTimeout);
+      }
+    });
+  </script>
+</body>
+</html> 

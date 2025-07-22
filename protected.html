@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protected Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: white;
+    }
+    #background-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    .poem-box {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 2;
+    }
+    .poem-box h3 {
+      color: #333;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    .poem-box p {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    .poem-box .author {
+      color: #888;
+      font-style: italic;
+      margin-top: 1rem;
+      text-align: right;
+    }
+    .toggle-button {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .toggle-button:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .poems-hidden .poem-box {
+      display: none;
+    }
+    .poem-container {
+      position: absolute;
+      z-index: 2;
+      padding: 2rem;
+      top: 2rem;
+      left: 0;
+      right: 0;
+    }
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #e6f3ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 0.5s;
+    }
+    .loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loading-text {
+      font-size: 1.5rem;
+      color: #333;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">
+    <div class="loading-text">Loading...</div>
+  </div>
+  <img id="background-image" src="Collage.jpg" alt="Background collage">
+  <button id="toggle-button" class="toggle-button">Amire Collage</button>
+  <div class="poem-container">
+    <div class="poem-box">
+      <h3>Faded Star</h3>
+      <p>Even downtrodden</p>
+      <p>More lovely than twinkling stars</p>
+      <p>You'll shimmer once more</p>
+      <div class="author">- Sad Boy</div>
+    </div>
+    
+    <div class="poem-box">
+      <h3>Ever my home</h3>
+      <p>At times I wonder hopelessly,</p>
+      <p>Is passion just a chase?</p>
+      <p>But reassured by your soft smile</p>
+      <p>I know love's warm embrace.</p>
+      <br>
+      <p>When clouds of doubt darken my sky</p>
+      <p>You chase the rain away</p>
+      <p>Your rays of sunlight breaking through</p>
+      <p>Pain fades like night to day.</p>
+      <br>
+      <p>My rock among the crashing waves</p>
+      <p>The ground on which I stand</p>
+      <p>Now I must prove my fortitude</p>
+      <p>So you can take my hand.</p>
+      <br>
+      <p>To you I owe my will to live</p>
+      <p>My hunger to be more.</p>
+      <p>In years when I relive the past</p>
+      <p>Was I your steady core?</p>
+      <div class="author">- Hopeful Boy</div>
+    </div>
+    
+    <div class="poem-box">
+      <h3>Blank</h3>
+      <p>Blank</p>
+      <p>Blank</p>
+      <p>Blank</p>
+      <p>Blank</p>
+      <div class="author">- Blank</div>
+    </div>
+    
+    <div class="poem-box">
+      <h3>Blank</h3>
+      <p>Blank</p>
+      <p>Blank</p>
+      <p>Blank</p>
+      <p>Blank</p>
+      <div class="author">- Blank</div>
+    </div>
+    
+    <div class="poem-box">
+      <h3>Love</h3>
+      <p>Ever so much joy</p>
+      <p>In those three wonderful words</p>
+      <p>I love you, Abbey</p>
+      <div class="author">- Mr. Boy</div>
+    </div>
+  </div>
+
+  <script>
+    // Redirect to pin entry if page is reloaded (security measure)
+    if (performance.navigation.type === 1) {
+      window.location.href = 'index.html';
+    }
+
+    // Hide loading screen when image is ready
+    const backgroundImage = document.getElementById('background-image');
+    const loading = document.getElementById('loading');
+
+    backgroundImage.addEventListener('load', function() {
+      setTimeout(() => {
+        loading.classList.add('hidden');
+      }, 200);
+    });
+
+    // Fallback: hide loading after 3 seconds even if image fails
+    setTimeout(() => {
+      loading.classList.add('hidden');
+    }, 3000);
+
+    const toggleButton = document.getElementById('toggle-button');
+    const poemContainer = document.querySelector('.poem-container');
+    let poemsVisible = true;
+
+    toggleButton.addEventListener('click', function() {
+      if (poemsVisible) {
+        poemContainer.classList.add('poems-hidden');
+        toggleButton.textContent = 'Show Everything';
+        poemsVisible = false;
+      } else {
+        poemContainer.classList.remove('poems-hidden');
+        toggleButton.textContent = 'Amire Collage';
+        poemsVisible = true;
+      }
+    });
+  </script>
+</body>
+</html> 
