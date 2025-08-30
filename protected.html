@@ -29,6 +29,8 @@
       margin-right: auto;
       position: relative;
       z-index: 2;
+      box-sizing: border-box;
+      width: 100%;
     }
     .poem-box h3 {
       color: #333;
@@ -38,7 +40,7 @@
     }
     .poem-box p {
       color: #555;
-      line-height: 1.6;
+      line-height: 1.1;
       margin-bottom: 0.5rem;
       font-size: 1rem;
     }
@@ -114,16 +116,6 @@
         z-index: 2;
       }
     }
-    .ticket-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 540px; /* 1.5x the previous 360px (approximate) */
-      height: 540px;
-      box-sizing: border-box;
-      position: relative;
-    }
     .ticket-placeholder-container {
       display: flex;
       flex-direction: row;
@@ -135,19 +127,11 @@
       margin: 0;
     }
     .ticket-rect {
-      height: 90%;
-      aspect-ratio: 3 / 5;
-      width: auto;
-      background: #111;
+      max-width: 300px;
+      width: 100%;
+      height: auto;
       border-radius: 0.5rem;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.15);
-    }
-    .countdown-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 2rem;
+      box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
     }
     .countdown-timer {
       font-size: 2rem;
@@ -155,6 +139,47 @@
       color: #222;
       letter-spacing: 0.05em;
       margin-top: 1rem;
+    }
+    .quiz-form {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 4px 16px 0 rgba(0,0,0,0.1);
+      background: transparent;
+      width: 100%;
+      max-width: 100%;
+      min-height: 600px;
+      margin: 0 auto;
+      display: block;
+    }
+    .quiz-form-custom {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .quiz-form-custom .question {
+      text-align: center;
+    }
+    .quiz-form-custom label {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+    .quiz-form-custom .next-btn,
+    .quiz-form-custom button[type="submit"] {
+      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .quiz-form-custom .next-btn:hover,
+    .quiz-form-custom button[type="submit"]:hover {
+      background: #111;
     }
   </style>
 </head>
@@ -165,6 +190,12 @@
   <img id="background-image" src="Collage.jpg" alt="Background collage">
   <button id="toggle-button" class="toggle-button">Amire Collage</button>
   <div class="poem-container">
+    <!-- Timer at the top -->
+    <div class="poem-box">
+      <h3>Countdown until I can see you</h3>
+      <div id="countdown-timer" class="countdown-timer">Loading...</div>
+    </div>
+
     <div class="poem-box">
       <h3>Faded Star</h3>
       <p>Even downtrodden</p>
@@ -198,21 +229,41 @@
     </div>
     
     <div class="poem-box">
-      <h3>Blank</h3>
-      <p>Blank</p>
-      <p>Blank</p>
-      <p>Blank</p>
-      <p>Blank</p>
-      <div class="author">- Blank</div>
-    </div>
-    
-    <div class="poem-box">
-      <h3>Blank</h3>
-      <p>Blank</p>
-      <p>Blank</p>
-      <p>Blank</p>
-      <p>Blank</p>
-      <div class="author">- Blank</div>
+      <h3>Each day</h3>
+      <p>Each day, I grow happier</p>
+      <p>as we hurdle back towards normal</p>
+      <br>
+      <p>I hope you share that feeling</p>
+      <br>
+      <p>Even as I remember unsavory things,</p>
+      <p>I tell you them to show I'm trying</p>
+      <p>You seem to understand and it means the world</p>
+      <br>
+      <p>In the background I feel guilt</p>
+      <p>The weight of what I've done</p>
+      <p>You push it away with your smile</p>
+      <p>You remind me of all we can be</p>
+      <br>
+      <p>Soon,</p>
+      <p>you'll rid me of unhappiness</p>
+      <p>We'll forget this dreadful chapter</p>
+      <br>
+      <p>I hope with each day you see the light as I do</p>
+      <p>I'm true to my mission to be perfect</p>
+      <br>
+      <p>The happiness I've felt</p>
+      <p>The happiness you've showered over me</p>
+      <p>It's indescribable</p>
+      <p>It's why I love you</p>
+      <br>
+      <p>Soon,</p>
+      <p>maybe even already… I hope</p>
+      <p>there wont be any more for me to remember,</p>
+      <p>there wont be more bad things to be shared</p>
+      <br>
+      <p>I know in time we'll look back and try to remember</p>
+      <p>what it was even like to be scared</p>
+      <div class="author">- Lover Boy</div>
     </div>
     
     <div class="poem-box">
@@ -222,14 +273,43 @@
       <p>I love you, Abbey</p>
       <div class="author">- Mr. Boy</div>
     </div>
-    <div class="poem-box countdown-box">
-      <h3>Countdown to September 14</h3>
-      <div id="countdown-timer" class="countdown-timer">Loading...</div>
+
+    <!-- Custom MC Quiz Form with Formspree -->
+    <div class="poem-box">
+      <h3>Build Your Own Date Quiz</h3>
+      <form action="https://formspree.io/f/xpwlpnvl" method="POST" class="quiz-form-custom">
+        <div class="question" data-question="1">
+          <label>What would you like to do?</label><br>
+          <label><input type="radio" name="activity" value="Stargazing and dancing" required> Stargazing and dancing</label><br>
+          <label><input type="radio" name="activity" value="Bowling and a movie"> Bowling and a movie</label><br>
+          <label><input type="radio" name="activity" value="Hike and picnic"> Hike and picnic</label><br>
+          <label><input type="radio" name="activity" value="Mini golf and Miniboss"> Mini golf and Miniboss</label>
+          <button type="button" class="next-btn">Next</button>
+        </div>
+        <div class="question" data-question="2" style="display: none;">
+          <label>Which sweet treat would you like to have?</label><br>
+          <label><input type="radio" name="treat" value="Brownies we make" required> Brownies we make</label><br>
+          <label><input type="radio" name="treat" value="Ice cream"> Ice cream</label><br>
+          <label><input type="radio" name="treat" value="Milkshakes"> Milkshakes</label><br>
+          <label><input type="radio" name="treat" value="Cookies"> Cookies</label>
+          <button type="button" class="next-btn">Next</button>
+        </div>
+        <div class="question" data-question="3" style="display: none;">
+          <label>For dinner before or after...</label><br>
+          <label><input type="radio" name="dinner" value="Mexican" required> Mexican</label><br>
+          <label><input type="radio" name="dinner" value="Italian"> Italian</label><br>
+          <label><input type="radio" name="dinner" value="American"> American</label><br>
+          <label><input type="radio" name="dinner" value="Japanese"> Japanese</label>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
     </div>
-    <div class="poem-box ticket-box">
+
+    <div class="poem-box">
+      <h3>Surprise!</h3>
       <div class="ticket-placeholder-container">
-        <div class="ticket-rect"></div>
-        <div class="ticket-rect"></div>
+        <img src="Ticket 1.png" alt="Ticket 1" class="ticket-rect">
+        <img src="Ticket 2.png" alt="Ticket 2" class="ticket-rect">
       </div>
     </div>
   </div>
@@ -271,27 +351,95 @@
       }
     });
 
-    // Countdown Timer Script
-    function updateCountdown() {
-      // Target: September 14, 2024, 12:00am PST (UTC-7)
-      const target = new Date('2024-09-14T07:00:00Z');
-      const now = new Date();
-      const diff = target - now;
-      if (diff <= 0) {
-        document.getElementById('countdown-timer').textContent = 'The day has arrived!';
-        return;
+    // Robust countdown timer using timeapi.io for current UTC time
+    (function() {
+      const countdownEl = document.getElementById('countdown-timer');
+      // Target: September 13, 2025, 12:00am PST (UTC-8) = 2025-09-13T08:00:00Z
+      const targetDate = new Date('2025-09-13T08:00:00Z');
+      let now = null;
+      let interval = null;
+
+      function renderCountdown(diffMs) {
+        if (diffMs <= 0) {
+          countdownEl.textContent = 'The day has arrived!';
+          clearInterval(interval);
+          return;
+        }
+        let totalSeconds = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSeconds / (24 * 3600));
+        totalSeconds %= (24 * 3600);
+        const hours = Math.floor(totalSeconds / 3600);
+        totalSeconds %= 3600;
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-      document.getElementById('countdown-timer').textContent =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-    if (document.getElementById('countdown-timer')) {
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    }
+
+      function startCountdown() {
+        function tick() {
+          const diffMs = targetDate - now;
+          renderCountdown(diffMs);
+          now = new Date(now.getTime() + 1000);
+        }
+        tick();
+        interval = setInterval(tick, 1000);
+      }
+
+      // Fetch current UTC time from timeapi.io
+      fetch('https://timeapi.io/api/Time/current/zone?timeZone=UTC')
+        .then(res => res.json())
+        .then(data => {
+          if (!data.dateTime) throw new Error('No datetime in response');
+          now = new Date(data.dateTime);
+          startCountdown();
+        })
+        .catch(() => {
+          countdownEl.textContent = 'Could not load time.';
+        });
+    })();
+
+    // Prevent Formspree form from redirecting and show a thank you message
+    document.addEventListener('DOMContentLoaded', function() {
+      const quizForm = document.querySelector('.quiz-form-custom');
+      if (quizForm) {
+        quizForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const formData = new FormData(quizForm);
+          fetch(quizForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          })
+          .then(response => {
+            if (response.ok) {
+              quizForm.innerHTML = '<div style="padding:2rem;text-align:center;font-size:1.2rem;">Thank you for submitting your date preferences! 💖</div>';
+            } else {
+              quizForm.innerHTML = '<div style="padding:2rem;text-align:center;font-size:1.2rem;color:#c00;">There was a problem submitting your form. Please try again later.</div>';
+            }
+          })
+          .catch(() => {
+            quizForm.innerHTML = '<div style="padding:2rem;text-align:center;font-size:1.2rem;color:#c00;">There was a problem submitting your form. Please try again later.</div>';
+          });
+        });
+      }
+    });
+
+    // Quiz navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const nextButtons = document.querySelectorAll('.next-btn');
+      nextButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const currentQuestion = this.closest('.question');
+          const currentQuestionNum = parseInt(currentQuestion.dataset.question);
+          const nextQuestion = document.querySelector(`[data-question="${currentQuestionNum + 1}"]`);
+          
+          if (nextQuestion) {
+            currentQuestion.style.display = 'none';
+            nextQuestion.style.display = 'block';
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html> 

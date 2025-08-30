@@ -46,7 +46,7 @@
       flex-direction: column;
       align-items: center;
     }
-    input[type="password"] {
+    input[type="text"] {
       padding: 0.7rem 1rem;
       border: 2px solid #e0e0e0;
       border-radius: 0.5rem;
@@ -112,7 +112,7 @@
     <h2>Enter Pin to Continue</h2>
     <form id="pin-form" autocomplete="off">
       <div class="input-group">
-        <input type="password" id="pin-input" placeholder="Enter pin here" maxlength="12" />
+        <input type="text" id="pin-input" placeholder="Enter pin here" maxlength="12" />
         <div id="error-message" class="error-message">Not quite</div>
       </div>
       <button type="submit">Submit</button>
@@ -128,7 +128,7 @@
     const pinInput = document.getElementById('pin-input');
     const errorMessage = document.getElementById('error-message');
     const welcomeMessage = document.getElementById('welcome-message');
-    const CORRECT_PIN = '1';
+    const CORRECT_PIN = '051024';
     let errorTimeout = null;
     let welcomeTimeout = null;
 
